@@ -105,6 +105,8 @@ public class AddressFileRecordService {
             log.info("Doing file [" + addressFileRecordTodo.getFileName() + "]");
             //更新状态
             addressFileRecordTodo.setState(AddressConstant.ADDRESS_FILE_RECORD_STATE_DOING);
+            //更新时间
+            addressFileRecordTodo.setDoingDate(new Date());
             //更新
             addressFileRecordDao.update(addressFileRecordTodo);
         } else {
@@ -196,7 +198,7 @@ public class AddressFileRecordService {
                         }
                     }
                 }
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 log.error(e.getMessage(), e);
                 //更新状态
                 addressFileRecordDoing.setState(AddressConstant.ADDRESS_FILE_RECORD_STATE_FAILED);
@@ -210,6 +212,8 @@ public class AddressFileRecordService {
             Long end = System.currentTimeMillis();
             //更新耗费时间
             addressFileRecordDoing.setConsumeTime(end - start);
+            //更新时间
+            addressFileRecordDoing.setReadDate(new Date());
             //更新
             addressFileRecordDao.update(addressFileRecordDoing);
             log.info("Read file [" + addressFileRecordDoing.getFileName() + "] end");
@@ -289,13 +293,12 @@ public class AddressFileRecordService {
                     if ((fileName.endsWith(".xls") || fileName.endsWith(".xlsx")) && !isExist(fileName)) {
                         //文件记录入库
                         AddressFileRecord addressFileRecord = new AddressFileRecord();
-                        Date now = new Date();
                         addressFileRecord.setFileName(file.getName());
                         addressFileRecord.setFilePath(filePath);
                         addressFileRecord.setAddressTotal(0);
                         addressFileRecord.setState(AddressConstant.ADDRESS_FILE_RECORD_STATE_TO_DO);
                         addressFileRecord.setConsumeTime(0L);
-                        addressFileRecord.setRecordDate(now);
+                        addressFileRecord.setScanDate(new Date());
                         addressFileRecordDao.insert(addressFileRecord);
                     }
                 }

@@ -24,7 +24,9 @@ public class AddressFileRecord extends JpaEntity<String> implements Serializable
     private String remark;
     private Integer state;
     private Long consumeTime;
-    private Date recordDate;
+    private Date scanDate;
+    private Date doingDate;
+    private Date readDate;
 
     @Id
     @SequenceGenerator(name = "idGenerator", sequenceName = "seq_addr_segm_file_record", initialValue = 1, allocationSize = 1)
@@ -98,13 +100,33 @@ public class AddressFileRecord extends JpaEntity<String> implements Serializable
         this.consumeTime = consumeTime;
     }
 
-    @Column(name = "record_date", nullable = false)
+    @Column(name = "scan_date", nullable = false)
     @Basic
-    public Date getRecordDate() {
-        return recordDate;
+    public Date getScanDate() {
+        return scanDate;
     }
 
-    public void setRecordDate(Date recordDate) {
-        this.recordDate = recordDate;
+    public void setScanDate(Date scanDate) {
+        this.scanDate = scanDate;
+    }
+
+    @Column(name = "doing_date", nullable = true)
+    @Basic
+    public Date getDoingDate() {
+        return doingDate;
+    }
+
+    public void setDoingDate(Date doingDate) {
+        this.doingDate = doingDate;
+    }
+
+    @Column(name = "read_date", nullable = true)
+    @Basic
+    public Date getReadDate() {
+        return readDate;
+    }
+
+    public void setReadDate(Date readDate) {
+        this.readDate = readDate;
     }
 }

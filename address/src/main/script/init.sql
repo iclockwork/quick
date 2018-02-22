@@ -121,7 +121,9 @@ create table ADDR_SEGM_FILE_RECORD
   REMARK               VARCHAR2(1024),
   STATE                NUMBER(1)            not null,
   CONSUME_TIME         NUMBER(12)           not null,
-  RECORD_DATE          DATE                 not null,
+  SCAN_DATE            DATE                 not null,
+  DOING_DATE           DATE,
+  READ_DATE            DATE,
   constraint PK_ADDR_SEGM_FILE_RECORD primary key (RECORD_ID)
 );
 
@@ -149,8 +151,14 @@ comment on column ADDR_SEGM_FILE_RECORD.STATE is
 comment on column ADDR_SEGM_FILE_RECORD.CONSUME_TIME is
 '耗费时间';
 
-comment on column ADDR_SEGM_FILE_RECORD.RECORD_DATE is
-'记录时间';
+comment on column ADDR_SEGM_FILE_RECORD.SCAN_DATE is
+'扫描时间';
+
+comment on column ADDR_SEGM_FILE_RECORD.DOING_DATE is
+'处理中时间';
+
+comment on column ADDR_SEGM_FILE_RECORD.READ_DATE is
+'读取时间';
 
 /*==============================================================*/
 /* Index: IDX_ADDR_SEGM_FILE_NAME                               */
