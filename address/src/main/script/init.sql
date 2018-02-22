@@ -28,7 +28,7 @@ cache 20;
 create table ADDR_SEGM_CHECK_TMP
 (
   ROW_NUM              NUMBER(24)           not null,
-  REGION_NAME          VARCHAR2(200),
+  REGION_NAME          VARCHAR2(400),
   V_STAND_NAME1        VARCHAR2(200),
   V_STAND_NAME2        VARCHAR2(200),
   V_STAND_NAME3        VARCHAR2(200),
