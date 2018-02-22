@@ -82,7 +82,8 @@ public class AddressFileRecordService {
                     ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
                     ftpClient.enterLocalPassiveMode();
                     //按天扫描
-                    String directory = ftpHelper.getFtpParam().getFtpDataFilePath() + DateUtils.dateToStr(new Date(), DateUtils.DATE_PATTERN_DEFAULT_SHORT);
+                    String day = DateUtils.dateToStr(new Date(), DateUtils.DATE_PATTERN_DEFAULT_SHORT);
+                    String directory = ftpHelper.getFtpParam().getFtpDataFilePath() + day;
                     innerListFiles(ftpClient, directory, true);
                 }
             }
@@ -268,6 +269,7 @@ public class AddressFileRecordService {
      * innerListFiles
      */
     private void innerListFiles(FTPClient ftpClient, String directory, boolean recursive) throws IOException {
+        //注意中文路径会有循环当前路径的bug，尽量使用非中文路径
         FTPFile[] found = ftpClient.listFiles(new String(directory.getBytes(ftpHelper.ENCODE), "iso-8859-1"));
         if (found != null) {
             for (FTPFile file : found) {

@@ -59,7 +59,7 @@ public class AddressSchedule {
      * "0 15 10 ? * 6L 2002-2005" 2002年至2005年的每月的最后一个星期五上午10:15触发
      * "0 15 10 ? * 6#3" 每月的第三个星期五上午10:15触发
      */
-    @Scheduled(cron = "0 0/1 * * * ?") // 每1分钟执行一次
+    @Scheduled(initialDelay = 10000, fixedDelay = 60000) // 间隔1分钟执行一次
     public void scanAddressFile() {
         try {
             log.info("Execute scan schedule start...");
@@ -70,7 +70,7 @@ public class AddressSchedule {
         }
     }
 
-    @Scheduled(cron = "0 0/1 * * * ?") // 每1分钟执行一次
+    @Scheduled(initialDelay = 20000, fixedDelay = 10000) // 间隔10秒钟执行一次
     public void readAddressFile() {
         try {
             log.info("Execute read schedule start...");
