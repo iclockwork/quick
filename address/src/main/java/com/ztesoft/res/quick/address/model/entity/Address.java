@@ -49,7 +49,7 @@ public class Address extends JpaEntity<String> implements Serializable {
     }
 
     @Basic
-    @Column(name = "region_name", nullable = true, length = 80)
+    @Column(name = "region_name", nullable = true, length = 400)
     public String getRegionName() {
         return regionName;
     }
