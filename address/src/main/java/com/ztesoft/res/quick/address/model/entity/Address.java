@@ -179,7 +179,7 @@ public class Address extends JpaEntity<String> implements Serializable {
     }
 
     @Basic
-    @Column(name = "old_stand_id7", nullable = true, length = 24)
+    @Column(name = "old_stand_id7", nullable = true, length = 200)
     public String getOldStandId7() {
         return oldStandId7;
     }

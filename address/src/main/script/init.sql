@@ -41,7 +41,7 @@ create table ADDR_SEGM_CHECK_TMP
   USE_TYPE             VARCHAR2(200),
   QUN_BIAOSHI          VARCHAR2(200),
   EQP_NAME             VARCHAR2(200),
-  OLD_STAND_ID7        CHAR(24),
+  OLD_STAND_ID7        VARCHAR2(200),
   OLD_STAND_NAME7      VARCHAR2(400),
   CHECK_ERR            VARCHAR2(2000),
   EQP_TABLE            CHAR(1),
