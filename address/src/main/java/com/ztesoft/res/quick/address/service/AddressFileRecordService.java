@@ -63,7 +63,7 @@ public class AddressFileRecordService {
     public void scanAddressFile() {
         String[] extensions = {"xls", "xlsx"};
         String encoding = System.getProperty("file.encoding");
-        log.info("System file encoding[" + encoding + "]");
+        log.debug("System file encoding[" + encoding + "]");
         Collection<File> files = FileUtils.listFiles(FileUtils.getFile(addressLocalDataFilePath), extensions, true);
         log.info("Scan files [" + files.size() + "]");
     }
@@ -102,7 +102,7 @@ public class AddressFileRecordService {
     public void doingAddressFile() {
         AddressFileRecord addressFileRecordTodo = addressFileRecordDao.earliestToDo();
         if (null != addressFileRecordTodo) {
-            log.info("Doing file [" + addressFileRecordTodo.getFileName() + "]");
+            log.info("Doing file [" + addressFileRecordTodo.getFilePath() + "]");
             //更新状态
             addressFileRecordTodo.setState(AddressConstant.ADDRESS_FILE_RECORD_STATE_DOING);
             //更新时间
@@ -123,7 +123,7 @@ public class AddressFileRecordService {
         if (null != addressFileRecordDoing) {
             //开始时间
             Long start = System.currentTimeMillis();
-            log.info("Read file [" + addressFileRecordDoing.getFileName() + "] start");
+            log.debug("Read file [" + addressFileRecordDoing.getFileName() + "] start");
 
             //读取EXCEL
             try {
@@ -156,7 +156,7 @@ public class AddressFileRecordService {
             addressFileRecordDoing.setConsumeTime(end - start);
             //更新
             addressFileRecordDao.update(addressFileRecordDoing);
-            log.info("Read file [" + addressFileRecordDoing.getFileName() + "] end");
+            log.debug("Read file [" + addressFileRecordDoing.getFileName() + "] end");
         } else {
             log.warn("There is no record doing");
         }
@@ -235,7 +235,7 @@ public class AddressFileRecordService {
         AddressFileRecord addressFileRecordExist = addressFileRecordDao.findByExample(addressFileRecordExample);
         if (null != addressFileRecordExist) {
             isExist = true;
-            log.warn("The file named [" + fileName + "] already exists");
+            log.debug("The file named [" + fileName + "] already exists");
         }
         return isExist;
     }
@@ -284,7 +284,7 @@ public class AddressFileRecordService {
                 } else {
                     filePath = directory + "/" + file.getName();
                 }
-                log.info("Scan file [" + filePath + "]");
+                log.debug("Scan file [" + filePath + "]");
                 if (file.isDirectory() && !fileName.equals(".") && !fileName.equals("..")) {
                     if (recursive) {
                         innerListFiles(ftpClient, filePath, recursive);
