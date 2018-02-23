@@ -35,6 +35,6 @@ logs/address.log
 
 按日期检查ADDR_SEGM_FILE_RECORD中的记录数是否与FTP上的Excel文件个数一致。
 
-检查ADDR_SEGM_FILE_RECORD中是否有失败的记录，状态为3。
+检查ADDR_SEGM_FILE_RECORD中是否有失败的记录，状态为3，当天状态改为0可以重新被读取。
 
 按批次号检查ADDR_SEGM_FILE_RECORD中单个文件记录地址总数是否与Excel文件中的地址数一致，以及是否与ADDR_SEGM_CHECK_TMP中的地址记录总数一致。
