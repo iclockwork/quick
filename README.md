@@ -30,7 +30,7 @@ logs/address.log
 
 如果读取失败，ADDR_SEGM_FILE_RECORD中的文件记录变更状态为2并记录读取的总地址数，成功的地址记录在ADDR_SEGM_CHECK_TMP中。
 
-如果读取失败，ADDR_SEGM_FILE_RECORD中的文件记录变更状态为3并记录错误信息，错误原因有可能是Excel不正确导致的文件过大。
+如果读取失败，ADDR_SEGM_FILE_RECORD中的文件记录变更状态为3并记录错误信息，错误原因有可能是Excel不正确导致的文件过大，使用正确的格式重新上传文件即可解决。
 * 验证方法参考
 
 按日期检查ADDR_SEGM_FILE_RECORD中的记录数是否与FTP上的Excel文件个数一致。
