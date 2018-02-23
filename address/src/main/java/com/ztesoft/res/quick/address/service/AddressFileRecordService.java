@@ -74,7 +74,7 @@ public class AddressFileRecordService {
     @Transactional
     public void scanAddressFileFromFTP() {
         try {
-            log.info("Scan files start");
+            log.debug("Scan files start");
             if (ftpHelper.connFTPServer()) {
                 FTPClient ftpClient = ftpHelper.getFtpClient();
                 if ((ftpClient != null) && ftpClient.isConnected()) {
@@ -91,7 +91,7 @@ public class AddressFileRecordService {
             log.error(e.getMessage(), e);
         } finally {
             ftpHelper.closeFTPServer();
-            log.info("Scan files end");
+            log.debug("Scan files end");
         }
     }
 

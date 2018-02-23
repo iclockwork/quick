@@ -62,9 +62,9 @@ public class AddressSchedule {
     @Scheduled(initialDelay = 10000, fixedDelay = 60000) // 间隔1分钟执行一次
     public void scanAddressFile() {
         try {
-            log.info("Execute scan schedule start...");
+            log.debug("Execute scan schedule start...");
             addressFileRecordService.scanAddressFileFromFTP();
-            log.info("Execute scan schedule end...");
+            log.debug("Execute scan schedule end...");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -73,10 +73,10 @@ public class AddressSchedule {
     @Scheduled(initialDelay = 20000, fixedDelay = 10000) // 间隔10秒钟执行一次
     public void readAddressFile() {
         try {
-            log.info("Execute read schedule start...");
+            log.debug("Execute read schedule start...");
             addressFileRecordService.doingAddressFile();
             addressFileRecordService.readAddressFileFromFTP();
-            log.info("Execute read schedule end...");
+            log.debug("Execute read schedule end...");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

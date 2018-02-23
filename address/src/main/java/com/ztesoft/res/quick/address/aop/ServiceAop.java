@@ -34,7 +34,7 @@ public class ServiceAop {
 
     @AfterReturning(returning = "result", pointcut = "webRequestLog()")
     public void doAfterReturning(Object result) {
-        logger.info("Consumption time of : " + (System.currentTimeMillis() - tLocal.get()) + " milliseconds");
+        logger.debug("Consumption time of : " + (System.currentTimeMillis() - tLocal.get()) + " milliseconds");
     }
 
     @Around("webRequestLog()")
