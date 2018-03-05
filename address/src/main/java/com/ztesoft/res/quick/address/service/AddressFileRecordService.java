@@ -223,19 +223,19 @@ public class AddressFileRecordService {
     }
 
     /**
-     * 根据文件名查询是否已经有读取记录
+     * 根据文件路径查询是否已经有读取记录
      *
-     * @param fileName 文件名
+     * @param filePath 文件路径
      * @return boolean
      */
-    private boolean isExist(String fileName) {
+    private boolean isExist(String filePath) {
         boolean isExist = false;
         AddressFileRecord addressFileRecordExample = new AddressFileRecord();
-        addressFileRecordExample.setFileName(fileName);
+        addressFileRecordExample.setFilePath(filePath);
         AddressFileRecord addressFileRecordExist = addressFileRecordDao.findByExample(addressFileRecordExample);
         if (null != addressFileRecordExist) {
             isExist = true;
-            log.debug("The file named [" + fileName + "] already exists");
+            log.debug("The file [" + filePath + "] already exists");
         }
         return isExist;
     }
@@ -290,7 +290,7 @@ public class AddressFileRecordService {
                         innerListFiles(ftpClient, filePath, recursive);
                     }
                 } else {
-                    if ((fileName.endsWith(".xls") || fileName.endsWith(".xlsx")) && !isExist(fileName)) {
+                    if ((fileName.endsWith(".xls") || fileName.endsWith(".xlsx")) && !isExist(filePath)) {
                         //文件记录入库
                         AddressFileRecord addressFileRecord = new AddressFileRecord();
                         addressFileRecord.setFileName(file.getName());

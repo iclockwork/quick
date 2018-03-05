@@ -1,6 +1,6 @@
 drop table ADDR_SEGM_CHECK_TMP cascade constraints;
 
-drop index IDX_ADDR_SEGM_FILE_NAME;
+drop index IDX_ADDR_SEGM_FILE_PATH;
 
 drop table ADDR_SEGM_FILE_RECORD cascade constraints;
 
@@ -161,8 +161,8 @@ comment on column ADDR_SEGM_FILE_RECORD.READ_DATE is
 '读取时间';
 
 /*==============================================================*/
-/* Index: IDX_ADDR_SEGM_FILE_NAME                               */
+/* Index: IDX_ADDR_SEGM_FILE_PATH                               */
 /*==============================================================*/
-create unique index IDX_ADDR_SEGM_FILE_NAME on ADDR_SEGM_FILE_RECORD (
-  FILE_NAME ASC
+create unique index IDX_ADDR_SEGM_FILE_PATH on ADDR_SEGM_FILE_RECORD (
+  FILE_PATH ASC
 );
