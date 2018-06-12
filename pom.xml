@@ -10,6 +10,7 @@
         <module>util-excel</module>
         <module>address</module>
         <module>demo-quartz</module>
+        <module>data-syn</module>
     </modules>
     <packaging>pom</packaging>
     <name>Quick</name>
@@ -70,12 +71,6 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
-        </dependency>
-        <!-- Liquibase -->
-        <dependency>
-            <groupId>org.liquibase</groupId>
-            <artifactId>liquibase-core</artifactId>
-            <version>3.5.3</version>
         </dependency>
         <!-- Hibernate -->
         <dependency>
