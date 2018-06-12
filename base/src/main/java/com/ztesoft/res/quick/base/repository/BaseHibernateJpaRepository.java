@@ -59,6 +59,7 @@ public abstract class BaseHibernateJpaRepository<T extends Entity, ID extends Se
 
     @Override
     public T findById(ID id) {
+        this.initClazz();
         return (T) this.getHibernateTemplate().get(clazz, id);
     }
 
@@ -71,5 +72,13 @@ public abstract class BaseHibernateJpaRepository<T extends Entity, ID extends Se
         }
 
         return obj;
+    }
+
+    private void initClazz() {
+        if (clazz == null) {
+            Type genType = getClass().getGenericSuperclass();
+            Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+            clazz = (Class) params[0];
+        }
     }
 }
