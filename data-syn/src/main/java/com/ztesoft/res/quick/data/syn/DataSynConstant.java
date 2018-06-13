@@ -62,10 +62,10 @@ public class DataSynConstant {
     /**
      * 字段类型 1 数字 2 字符串 3 时间 4 浮点
      */
-    public static final Integer DATA_SYN_TABLE_FIELD_TYPE_DATE = 2;
+    public static final Integer DATA_SYN_TABLE_FIELD_TYPE_DATE = 3;
 
     /**
      * 字段类型 1 数字 2 字符串 3 时间 4 浮点
      */
-    public static final Integer DATA_SYN_TABLE_FIELD_TYPE_DOUBLE = 2;
+    public static final Integer DATA_SYN_TABLE_FIELD_TYPE_DOUBLE = 4;
 }

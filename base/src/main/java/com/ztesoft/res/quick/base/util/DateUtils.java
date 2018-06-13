@@ -20,6 +20,11 @@ public class DateUtils {
     public static final String DATE_PATTERN_DEFAULT_LONG = "yyyy-MM-dd HH:mm:ss";
 
     /**
+     * DATE_PATTERN_SLASH_LONG
+     */
+    public static final String DATE_PATTERN_SLASH_LONG = "yyyy/MM/dd HH:mm:ss";
+
+    /**
      * DATE_PATTERN_DEFAULT_LONG_PRECISION_MIN
      */
     public static final String DATE_PATTERN_DEFAULT_LONG_PRECISION_MIN = "yyyy-MM-dd HH:mm";

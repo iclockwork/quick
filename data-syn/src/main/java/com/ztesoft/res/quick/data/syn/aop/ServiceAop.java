@@ -1,8 +1,10 @@
 package com.ztesoft.res.quick.data.syn.aop;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -37,9 +39,9 @@ public class ServiceAop {
         logger.debug("Consumption time of : " + (System.currentTimeMillis() - tLocal.get()) + " milliseconds");
     }
 
-    @Around("webRequestLog()")
-    public Object around(ProceedingJoinPoint pjp) throws Throwable {
-        Object o = pjp.proceed();
-        return o;
-    }
+//    @Around("webRequestLog()")
+//    public Object around(ProceedingJoinPoint pjp) throws Throwable {
+//        Object o = pjp.proceed();
+//        return o;
+//    }
 }

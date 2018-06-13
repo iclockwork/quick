@@ -7,6 +7,7 @@ import com.ztesoft.res.quick.data.syn.DataSynConstant;
 import com.ztesoft.res.quick.data.syn.model.entity.DataSynDoRecord;
 import com.ztesoft.res.quick.data.syn.model.entity.DataSynFtp;
 import com.ztesoft.res.quick.data.syn.model.entity.DataSynJob;
+import com.ztesoft.res.quick.data.syn.model.entity.DataSynTableField;
 import com.ztesoft.res.quick.data.syn.model.repository.DataSynDoRecordDao;
 import com.ztesoft.res.quick.data.syn.model.repository.DataSynFtpDao;
 import com.ztesoft.res.quick.data.syn.model.repository.DataSynJobDao;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * DataSynService
@@ -89,18 +91,37 @@ public class DataSynService {
                         if (null != dataList && !dataList.isEmpty() && dataList.size() > 1) {
                             rowTotal = dataList.size() - 1;
                             log.info("File data row size : " + rowTotal);
-                            //第一行为表头，从第二行开始读取
+                            //字段定义
+                            List<DataSynTableField> fields = dataSynTableFieldDao.list(dataSynJob.getJobId());
+                            String fieldNameStr = "";
+                            String fieldValueStr = "";
+                            for (int i = 0; i < fields.size(); i++) {
+                                DataSynTableField field = fields.get(i);
+                                if (StringUtils.isNotEmpty(fieldNameStr)) {
+                                    fieldNameStr += ", ";
+                                    fieldValueStr += ", ";
+                                }
+                                fieldNameStr += field.getFieldName();
+                                fieldValueStr += "?";
+                            }
+                            String sql = "insert into " + dataSynJob.getTableName() + " (" + fieldNameStr + ") values (" + fieldValueStr + ")";
+                            log.info("Table save sql : " + sql);
+
+                            //数据，第一行为表头，从第二行开始读取
                             for (int i = 1; i < dataList.size(); i++) {
                                 String[] dataArr = dataList.get(i);
                                 String rowStr = "";
                                 for (int j = 0; j < dataArr.length; j++) {
                                     if (StringUtils.isNotEmpty(rowStr)) {
-                                        rowStr += ",";
+                                        rowStr += ", ";
                                     }
                                     rowStr += dataArr[j];
                                 }
 
-                                log.info("File data rows " + i + " :" + rowStr);
+                                log.info("File data rows " + i + " : " + rowStr);
+
+                                //插入数据
+                                dataSynTableFieldDao.insert(fields, sql, dataArr);
                             }
                         } else {
                             log.warn("There is no data");
