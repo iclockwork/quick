@@ -4,7 +4,7 @@ import com.ztesoft.res.quick.base.repository.JpaEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Time;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -21,12 +21,12 @@ public class DataSynDoRecord extends JpaEntity<String> implements Serializable {
     private Long recordId;
     private String fileName;
     private String filePath;
-    private Long rowTotal;
+    private Integer rowTotal;
     private String remark;
     private Integer state;
     private Long consumeTime;
-    private Time startDate;
-    private Time endDate;
+    private Date startDate;
+    private Date endDate;
     private Long jobId;
 
     @Id
@@ -63,11 +63,11 @@ public class DataSynDoRecord extends JpaEntity<String> implements Serializable {
 
     @Basic
     @Column(name = "ROW_TOTAL", nullable = true, precision = 0)
-    public Long getRowTotal() {
+    public Integer getRowTotal() {
         return rowTotal;
     }
 
-    public void setRowTotal(Long rowTotal) {
+    public void setRowTotal(Integer rowTotal) {
         this.rowTotal = rowTotal;
     }
 
@@ -103,21 +103,21 @@ public class DataSynDoRecord extends JpaEntity<String> implements Serializable {
 
     @Basic
     @Column(name = "START_DATE", nullable = false)
-    public Time getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Time startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
     @Basic
     @Column(name = "END_DATE", nullable = true)
-    public Time getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Time endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

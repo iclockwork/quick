@@ -1,6 +1,8 @@
 package com.ztesoft.res.quick.base.util.ftp;
 
 
+import com.ztesoft.res.quick.base.util.cvs.CsvReader;
+import com.ztesoft.res.quick.base.util.cvs.CsvWriter;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
@@ -11,8 +13,11 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * FTPHelper
@@ -294,5 +299,66 @@ public class FTPHelper {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public ArrayList<String[]> getFileContentForList(String ftpPath, String remoteFileName, String encode) {
+        try {
+            InputStream in = null;
+            ArrayList<String[]> csvList = new ArrayList<String[]>();
+            if ((ftpClient != null) && ftpClient.isConnected()) {
+                ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.changeWorkingDirectory(ftpPath);
+                in = ftpClient.retrieveFileStream(remoteFileName);
+                if (null != in) {
+                    CsvReader reader = null;
+                    reader = new CsvReader(in, Charset.forName(encode));
+                    //reader.readHeaders();  //保留文件列头
+                    while (reader.readRecord()) {
+                        csvList.add(reader.getValues());
+                    }
+                    reader.close();
+                    in.close();
+                    return csvList;
+                } else {
+                    throw new RuntimeException("获取文件内容：" + remoteFileName + " 出错！\r\n" + "文件不存在！");
+                }
+            }
+            return csvList;
+        } catch (IOException ex) {
+            throw new RuntimeException("获取文件内容：" + remoteFileName + " 出错！\r\n" + ex.getMessage());
+        }
+    }
+
+    public void writeCsvFile(String remotePath, String fileName, List dataList, String encode) {
+        OutputStream out = null;
+        CsvWriter wr = null;
+        try {
+            if ((ftpClient != null) && ftpClient.isConnected() && dataList != null && !dataList.isEmpty()) {
+                ftpClient.setControlEncoding(ENCODE); // 中文支持
+                ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+                ftpClient.enterLocalPassiveMode();
+                ftpClient.changeWorkingDirectory(remotePath);
+                out = ftpClient.storeFileStream(fileName);
+                wr = new CsvWriter(out, ',', Charset.forName(encode));
+                for (int i = 0; i < dataList.size(); i++) {
+                    wr.writeRecord((String[]) dataList.get(i));
+                }
+                wr.close();
+                out.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (wr != null) wr.close();
+                if (out != null) out.close();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+
+            }
+
+        }
     }
 }

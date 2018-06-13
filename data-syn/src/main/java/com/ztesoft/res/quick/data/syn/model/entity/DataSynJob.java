@@ -4,7 +4,7 @@ import com.ztesoft.res.quick.base.repository.JpaEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Time;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -29,11 +29,12 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     private String fileNameSeparate;
     private String fileNameTimeFormat;
     private String fileNameExtension;
+    private String fileEncode;
     private String tableName;
     private String description;
     private Integer state;
-    private Time createTime;
-    private Time modifyTime;
+    private Date createTime;
+    private Date modifyTime;
 
     @Id
     @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_JOB", initialValue = 1, allocationSize = 1)
@@ -148,6 +149,16 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     }
 
     @Basic
+    @Column(name = "FILE_ENCODE", nullable = false, length = 16)
+    public String getFileEncode() {
+        return fileEncode;
+    }
+
+    public void setFileEncode(String fileEncode) {
+        this.fileEncode = fileEncode;
+    }
+
+    @Basic
     @Column(name = "TABLE_NAME", nullable = false, length = 100)
     public String getTableName() {
         return tableName;
@@ -179,21 +190,21 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
 
     @Basic
     @Column(name = "CREATE_TIME", nullable = false)
-    public Time getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Time createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "MODIFY_TIME", nullable = false)
-    public Time getModifyTime() {
+    public Date getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Time modifyTime) {
+    public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
 
@@ -213,6 +224,7 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
                 Objects.equals(fileNameSeparate, that.fileNameSeparate) &&
                 Objects.equals(fileNameTimeFormat, that.fileNameTimeFormat) &&
                 Objects.equals(fileNameExtension, that.fileNameExtension) &&
+                Objects.equals(fileEncode, that.fileEncode) &&
                 Objects.equals(tableName, that.tableName) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(state, that.state) &&
@@ -223,6 +235,6 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(jobId, jobName, jobGroup, cronExpression, jobType, ftpId, dir, fileNamePrefix, fileNameSeparate, fileNameTimeFormat, fileNameExtension, tableName, description, state, createTime, modifyTime);
+        return Objects.hash(jobId, jobName, jobGroup, cronExpression, jobType, ftpId, dir, fileNamePrefix, fileNameSeparate, fileNameTimeFormat, fileNameExtension, fileEncode, tableName, description, state, createTime, modifyTime);
     }
 }

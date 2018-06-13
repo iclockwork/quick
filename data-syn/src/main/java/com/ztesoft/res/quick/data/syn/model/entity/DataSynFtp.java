@@ -4,7 +4,7 @@ import com.ztesoft.res.quick.base.repository.JpaEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Time;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -23,8 +23,8 @@ public class DataSynFtp extends JpaEntity<String> implements Serializable {
     private Integer port;
     private String username;
     private String password;
-    private Time createTime;
-    private Time modifyTime;
+    private Date createTime;
+    private Date modifyTime;
 
     @Id
     @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_FTP", initialValue = 1, allocationSize = 1)
@@ -80,21 +80,21 @@ public class DataSynFtp extends JpaEntity<String> implements Serializable {
 
     @Basic
     @Column(name = "CREATE_TIME", nullable = false)
-    public Time getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Time createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "MODIFY_TIME", nullable = false)
-    public Time getModifyTime() {
+    public Date getModifyTime() {
         return modifyTime;
     }
 
-    public void setModifyTime(Time modifyTime) {
+    public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
     }
 
