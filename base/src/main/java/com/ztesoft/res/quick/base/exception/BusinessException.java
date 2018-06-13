@@ -8,7 +8,7 @@ package com.ztesoft.res.quick.base.exception;
  * @version: 1.0
  * @since: JDK 1.8
  */
-public class BusinessException extends RuntimeException {
+public class BusinessException extends Exception {
     /**
      * 异常信息
      */

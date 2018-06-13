@@ -1,6 +1,7 @@
 package com.ztesoft.res.quick.base.util.ftp;
 
 
+import com.ztesoft.res.quick.base.exception.BusinessException;
 import com.ztesoft.res.quick.base.util.cvs.CsvReader;
 import com.ztesoft.res.quick.base.util.cvs.CsvWriter;
 import org.apache.commons.net.ftp.FTP;
@@ -88,9 +89,9 @@ public class FTPHelper {
      * <p>
      * the interface exception
      */
-    public boolean connFTPServer() {
+    public boolean connFTPServer() throws BusinessException {
         if (ftpParam == null) {
-            throw new RuntimeException("没有配置FTP参数！");
+            throw new BusinessException("没有配置FTP参数！");
         }
         try {
             if ((ftpClient != null) && !ftpClient.isConnected()) {
@@ -104,23 +105,23 @@ public class FTPHelper {
             }
             return false;
         } catch (IOException ex) {
-            throw new RuntimeException("连接FTP服务器失败：" + ex.getMessage());
+            throw new BusinessException("连接FTP服务器失败：" + ex.getMessage());
         }
     }
 
-    public void closeFTPServer() {
+    public void closeFTPServer() throws BusinessException {
         try {
             if ((ftpClient != null) && ftpClient.isConnected()) {
                 ftpClient.logout();
                 ftpClient.disconnect();
             }
         } catch (IOException ex) {
-            throw new RuntimeException("关闭FTP服务器失败：" + ex.getMessage());
+            throw new BusinessException("关闭FTP服务器失败：" + ex.getMessage());
         }
 
     }
 
-    public boolean delFile(String path, String fileName) {
+    public boolean delFile(String path, String fileName) throws BusinessException {
         try {
             if (ftpClient != null && ftpClient.isConnected()) {
                 ftpClient.enterLocalPassiveMode();
@@ -130,7 +131,7 @@ public class FTPHelper {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
-            throw new RuntimeException("删除" + path + "目录下文件" + fileName + "出错！\r\n：" + ex.getMessage());
+            throw new BusinessException("删除" + path + "目录下文件" + fileName + "出错！\r\n：" + ex.getMessage());
         } finally {
 
         }
@@ -301,7 +302,7 @@ public class FTPHelper {
         return false;
     }
 
-    public ArrayList<String[]> getFileContentForList(String ftpPath, String remoteFileName, String encode) {
+    public ArrayList<String[]> getFileContentForList(String ftpPath, String remoteFileName, String encode) throws BusinessException {
         try {
             InputStream in = null;
             ArrayList<String[]> csvList = new ArrayList<String[]>();
@@ -321,12 +322,12 @@ public class FTPHelper {
                     in.close();
                     return csvList;
                 } else {
-                    throw new RuntimeException("获取文件内容：" + remoteFileName + " 出错！\r\n" + "文件不存在！");
+                    throw new BusinessException("获取文件内容：" + remoteFileName + " 出错！\r\n" + "文件不存在！");
                 }
             }
             return csvList;
         } catch (IOException ex) {
-            throw new RuntimeException("获取文件内容：" + remoteFileName + " 出错！\r\n" + ex.getMessage());
+            throw new BusinessException("获取文件内容：" + remoteFileName + " 出错！\r\n" + ex.getMessage());
         }
     }
 

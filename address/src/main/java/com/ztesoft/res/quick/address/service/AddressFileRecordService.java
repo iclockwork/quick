@@ -5,6 +5,7 @@ import com.ztesoft.res.quick.address.model.entity.Address;
 import com.ztesoft.res.quick.address.model.entity.AddressFileRecord;
 import com.ztesoft.res.quick.address.model.repository.AddressDao;
 import com.ztesoft.res.quick.address.model.repository.AddressFileRecordDao;
+import com.ztesoft.res.quick.base.exception.BusinessException;
 import com.ztesoft.res.quick.base.util.DateUtils;
 import com.ztesoft.res.quick.base.util.ftp.FTPHelper;
 import com.ztesoft.res.quick.util.excel.ExcelLogs;
@@ -72,7 +73,7 @@ public class AddressFileRecordService {
      * 扫描文件
      */
     @Transactional
-    public void scanAddressFileFromFTP() {
+    public void scanAddressFileFromFTP() throws BusinessException {
         try {
             log.debug("Scan files start");
             if (ftpHelper.connFTPServer()) {
@@ -166,7 +167,7 @@ public class AddressFileRecordService {
      * 取一个处理中的文件进行读取（按时间最早）
      */
     @Transactional
-    public void readAddressFileFromFTP() {
+    public void readAddressFileFromFTP() throws BusinessException {
         AddressFileRecord addressFileRecordDoing = addressFileRecordDao.earliestDoing();
         if (null != addressFileRecordDoing) {
             //开始时间

@@ -1,5 +1,6 @@
 package com.ztesoft.res.quick.data.syn.service;
 
+import com.ztesoft.res.quick.base.exception.BusinessException;
 import com.ztesoft.res.quick.base.util.DateUtils;
 import com.ztesoft.res.quick.base.util.ftp.FTPHelper;
 import com.ztesoft.res.quick.base.util.ftp.FTPParamConfig;
@@ -56,7 +57,7 @@ public class DataSynService {
      * 取一个Job执行（按时间最早）
      */
     @Transactional
-    public void doDataSynJob() {
+    public void doDataSynJob() throws Exception {
         DataSynJob dataSynJob = dataSynJobDao.earliest();
         if (null != dataSynJob) {
             log.info("Do job [" + dataSynJob.getJobName() + "] start");
@@ -121,7 +122,7 @@ public class DataSynService {
                                 log.info("File data rows " + i + " : " + rowStr);
 
                                 //插入数据
-                                dataSynTableFieldDao.insert(fields, sql, dataArr);
+                                dataSynTableFieldDao.insert(i, fields, sql, dataArr);
                             }
                         } else {
                             log.warn("There is no data");
@@ -137,9 +138,10 @@ public class DataSynService {
                 dataSynDoRecord.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_SUCCESSFUL);
                 dataSynDoRecord.setEndDate(end);
                 dataSynDoRecordDao.insert(dataSynDoRecord);
-            } catch (Exception e) {
+            } catch (BusinessException e) {
                 log.error(e.getMessage(), e);
 
+                //记录自定义异常，自定义异常不回滚
                 Date end = new Date();
                 Long endS = end.getTime();
                 dataSynDoRecord.setConsumeTime(endS - startS);
@@ -147,6 +149,10 @@ public class DataSynService {
                 dataSynDoRecord.setEndDate(end);
                 dataSynDoRecord.setRemark(e.getMessage());
                 dataSynDoRecordDao.insert(dataSynDoRecord);
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+                //将异常抛出去，否则事务不回滚
+                throw e;
             } finally {
                 ftpHelper.closeFTPServer();
             }
