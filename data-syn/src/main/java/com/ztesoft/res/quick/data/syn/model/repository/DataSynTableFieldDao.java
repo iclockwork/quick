@@ -51,7 +51,7 @@ public class DataSynTableFieldDao extends BaseHibernateJpaRepository<DataSynTabl
                                 String value = dataArr[i];
                                 query.setString(field.getFieldName(), value);
                             } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_DATE.equals(field.getFieldType())) {
-                                Date value = StringUtils.isNotEmpty(dataArr[i]) ? DateUtils.strToDate(dataArr[i], DateUtils.DATE_PATTERN_SLASH_LONG) : null;
+                                Date value = StringUtils.isNotEmpty(dataArr[i]) ? DateUtils.strToDate(dataArr[i], field.getTimeFormat()) : null;
                                 query.setDate(field.getFieldName(), value);
                             } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_DOUBLE.equals(field.getFieldType())) {
                                 Double value = StringUtils.isNotEmpty(dataArr[i]) ? new Double(dataArr[i]) : 0;

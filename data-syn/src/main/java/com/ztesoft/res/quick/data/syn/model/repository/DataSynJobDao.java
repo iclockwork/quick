@@ -18,6 +18,15 @@ import java.util.List;
 @Repository("dataSynJobDao")
 public class DataSynJobDao extends BaseHibernateJpaRepository<DataSynJob, Long> {
     /**
+     * list
+     */
+    public List<DataSynJob> list() {
+        List<DataSynJob> jobs = (List<DataSynJob>) this.getHibernateTemplate().findByNamedParam("from DataSynJob t where t.state = :state order by t.createTime asc", "state", DataSynConstant.DATA_SYN_JOB_STATE_ENABLE);
+
+        return jobs;
+    }
+
+    /**
      * 取一个任务（按时间最早）
      */
     public DataSynJob earliest() {

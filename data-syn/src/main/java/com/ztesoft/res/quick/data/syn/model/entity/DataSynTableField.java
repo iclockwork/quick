@@ -23,6 +23,7 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
     private Integer fieldOrder;
     private Long jobId;
     private Integer ignoreFlag;
+    private String timeFormat;
 
     @Id
     @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_TABLE_FIELD", initialValue = 1, allocationSize = 1)
@@ -86,6 +87,16 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
         this.ignoreFlag = ignoreFlag;
     }
 
+    @Basic
+    @Column(name = "TIME_FORMAT", nullable = false, length = 100)
+    public String getTimeFormat() {
+        return timeFormat;
+    }
+
+    public void setTimeFormat(String timeFormat) {
+        this.timeFormat = timeFormat;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -96,12 +107,13 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
                 Objects.equals(fieldType, that.fieldType) &&
                 Objects.equals(fieldOrder, that.fieldOrder) &&
                 Objects.equals(jobId, that.jobId) &&
-                Objects.equals(ignoreFlag, that.ignoreFlag);
+                Objects.equals(ignoreFlag, that.ignoreFlag) &&
+                Objects.equals(timeFormat, that.timeFormat);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(fieldId, fieldName, fieldType, fieldOrder, jobId, ignoreFlag);
+        return Objects.hash(fieldId, fieldName, fieldType, fieldOrder, jobId, ignoreFlag, timeFormat);
     }
 }
