@@ -22,6 +22,7 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
     private Integer fieldType;
     private Integer fieldOrder;
     private Long jobId;
+    private Integer ignoreFlag;
 
     @Id
     @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_TABLE_FIELD", initialValue = 1, allocationSize = 1)
@@ -75,6 +76,16 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
         this.jobId = jobId;
     }
 
+    @Basic
+    @Column(name = "IGNORE_FLAG", nullable = false)
+    public Integer getIgnoreFlag() {
+        return ignoreFlag;
+    }
+
+    public void setIgnoreFlag(Integer ignoreFlag) {
+        this.ignoreFlag = ignoreFlag;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -84,12 +95,13 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
                 Objects.equals(fieldName, that.fieldName) &&
                 Objects.equals(fieldType, that.fieldType) &&
                 Objects.equals(fieldOrder, that.fieldOrder) &&
-                Objects.equals(jobId, that.jobId);
+                Objects.equals(jobId, that.jobId) &&
+                Objects.equals(ignoreFlag, that.ignoreFlag);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(fieldId, fieldName, fieldType, fieldOrder, jobId);
+        return Objects.hash(fieldId, fieldName, fieldType, fieldOrder, jobId, ignoreFlag);
     }
 }

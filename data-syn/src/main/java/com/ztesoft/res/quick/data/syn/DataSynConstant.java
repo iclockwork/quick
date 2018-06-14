@@ -68,4 +68,14 @@ public class DataSynConstant {
      * 字段类型 1 数字 2 字符串 3 时间 4 浮点
      */
     public static final Integer DATA_SYN_TABLE_FIELD_TYPE_DOUBLE = 4;
+
+    /**
+     * 是否忽略 0 否 1 是
+     */
+    public static final Integer DATA_SYN_TABLE_FIELD_IGNORE_FLAG_NO = 0;
+
+    /**
+     * 是否忽略 0 否 1 是
+     */
+    public static final Integer DATA_SYN_TABLE_FIELD_IGNORE_FLAG_YES = 1;
 }

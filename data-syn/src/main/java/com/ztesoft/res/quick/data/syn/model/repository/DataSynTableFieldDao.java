@@ -43,18 +43,20 @@ public class DataSynTableFieldDao extends BaseHibernateJpaRepository<DataSynTabl
                     Query query = session.createSQLQuery(sql);
                     for (int i = 0; i < dataArr.length; i++) {
                         DataSynTableField field = fields.get(i);
-                        if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_NUMBER.equals(field.getFieldType())) {
-                            Integer value = StringUtils.isNotEmpty(dataArr[i]) ? new Integer(dataArr[i]) : 0;
-                            query.setInteger(i, value);
-                        } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_STRING.equals(field.getFieldType())) {
-                            String value = dataArr[i];
-                            query.setString(i, value);
-                        } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_DATE.equals(field.getFieldType())) {
-                            Date value = StringUtils.isNotEmpty(dataArr[i]) ? DateUtils.strToDate(dataArr[i], DateUtils.DATE_PATTERN_SLASH_LONG) : null;
-                            query.setDate(i, value);
-                        } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_DOUBLE.equals(field.getFieldType())) {
-                            Double value = StringUtils.isNotEmpty(dataArr[i]) ? new Double(dataArr[i]) : 0;
-                            query.setDouble(i, value);
+                        if (DataSynConstant.DATA_SYN_TABLE_FIELD_IGNORE_FLAG_NO.equals(field.getIgnoreFlag())) {
+                            if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_NUMBER.equals(field.getFieldType())) {
+                                Integer value = StringUtils.isNotEmpty(dataArr[i]) ? new Integer(dataArr[i]) : 0;
+                                query.setInteger(field.getFieldName(), value);
+                            } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_STRING.equals(field.getFieldType())) {
+                                String value = dataArr[i];
+                                query.setString(field.getFieldName(), value);
+                            } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_DATE.equals(field.getFieldType())) {
+                                Date value = StringUtils.isNotEmpty(dataArr[i]) ? DateUtils.strToDate(dataArr[i], DateUtils.DATE_PATTERN_SLASH_LONG) : null;
+                                query.setDate(field.getFieldName(), value);
+                            } else if (DataSynConstant.DATA_SYN_TABLE_FIELD_TYPE_DOUBLE.equals(field.getFieldType())) {
+                                Double value = StringUtils.isNotEmpty(dataArr[i]) ? new Double(dataArr[i]) : 0;
+                                query.setDouble(field.getFieldName(), value);
+                            }
                         }
                     }
                     num = query.executeUpdate();
