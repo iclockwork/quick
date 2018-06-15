@@ -206,7 +206,7 @@ public class DataSynService {
 
                     //表头初始化一次
                     if (0 == i) {
-                        header[j] = field.getFieldName();
+                        header[j] = field.getFieldName().toUpperCase();
                     }
 
                     if (StringUtils.isNotEmpty(fieldNameStr)) {
