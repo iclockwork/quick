@@ -163,7 +163,7 @@ public class DataSynService {
                         rowStr += dataArr[j];
                     }
 
-                    log.info("File data rows " + i + " : " + rowStr);
+                    log.debug("File data rows " + i + " : " + rowStr);
 
                     //插入数据
                     dataSynTableFieldDao.genericInsert(i, fields, sql, dataArr);
@@ -190,6 +190,7 @@ public class DataSynService {
 
         if (null != dataList && !dataList.isEmpty()) {
             rowTotal = dataList.size();
+            log.info("Table data row size : " + rowTotal);
             //字段定义
             List<DataSynTableField> fields = dataSynTableFieldDao.list(dataSynJob.getJobId());
 
@@ -227,7 +228,7 @@ public class DataSynService {
                 //加数据
                 writeDataList.add(writeData);
 
-                log.info("File data rows " + (i + 1) + " : " + fieldValueStr);
+                log.debug("Table data rows " + (i + 1) + " : " + fieldValueStr);
             }
 
             if (ftpHelper.connFTPServer()) {
