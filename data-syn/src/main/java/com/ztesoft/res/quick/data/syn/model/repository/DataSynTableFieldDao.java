@@ -10,8 +10,10 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * DataSynTableFieldDao
@@ -28,14 +30,22 @@ public class DataSynTableFieldDao extends BaseHibernateJpaRepository<DataSynTabl
      */
     public List<DataSynTableField> list(Long jobId) {
         List<DataSynTableField> fields = (List<DataSynTableField>) this.getHibernateTemplate().findByNamedParam("from DataSynTableField t where t.jobId = :jobId order by t.fieldOrder asc", "jobId", jobId);
-
         return fields;
     }
 
     /**
-     * insert
+     * 通用查询
      */
-    public Object insert(int index, List<DataSynTableField> fields, String sql, String[] dataArr) {
+    public List<Map<String, Object>> genericList(String sql) {
+        List<Object> values = new ArrayList<Object>();
+        List<Map<String, Object>> list = this.findAllBySql(sql, values);
+        return list;
+    }
+
+    /**
+     * 通用插入
+     */
+    public Object genericInsert(int index, List<DataSynTableField> fields, String sql, String[] dataArr) {
         return this.getHibernateTemplate().execute(new HibernateCallback() {
             public Object doInHibernate(Session session) {
                 int num = 0;

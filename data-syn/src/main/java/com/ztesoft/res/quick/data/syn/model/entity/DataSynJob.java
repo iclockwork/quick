@@ -31,6 +31,7 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     private String fileNameExtension;
     private String fileEncode;
     private String tableName;
+    private String tableQuerySql;
     private String description;
     private Integer state;
     private Date createTime;
@@ -169,6 +170,16 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     }
 
     @Basic
+    @Column(name = "TABLE_QUERY_SQL", nullable = false, length = 4000)
+    public String getTableQuerySql() {
+        return tableQuerySql;
+    }
+
+    public void setTableQuerySql(String tableQuerySql) {
+        this.tableQuerySql = tableQuerySql;
+    }
+
+    @Basic
     @Column(name = "DESCRIPTION", nullable = true, length = 1024)
     public String getDescription() {
         return description;
@@ -226,6 +237,7 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
                 Objects.equals(fileNameExtension, that.fileNameExtension) &&
                 Objects.equals(fileEncode, that.fileEncode) &&
                 Objects.equals(tableName, that.tableName) &&
+                Objects.equals(tableQuerySql, that.tableQuerySql) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(state, that.state) &&
                 Objects.equals(createTime, that.createTime) &&
@@ -235,6 +247,6 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(jobId, jobName, jobGroup, cronExpression, jobType, ftpId, dir, fileNamePrefix, fileNameSeparate, fileNameTimeFormat, fileNameExtension, fileEncode, tableName, description, state, createTime, modifyTime);
+        return Objects.hash(jobId, jobName, jobGroup, cronExpression, jobType, ftpId, dir, fileNamePrefix, fileNameSeparate, fileNameTimeFormat, fileNameExtension, fileEncode, tableName, tableQuerySql, description, state, createTime, modifyTime);
     }
 }

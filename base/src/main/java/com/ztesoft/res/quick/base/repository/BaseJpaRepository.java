@@ -1,6 +1,8 @@
 package com.ztesoft.res.quick.base.repository;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * BaseHibernateJpaRepository
@@ -61,4 +63,13 @@ public interface BaseJpaRepository<T extends Entity, ID extends Serializable> {
      * @param object object
      */
     T findByExample(T object);
+
+    /**
+     * 自定义封装查询-非分页
+     *
+     * @param sql
+     * @param values
+     * @return
+     */
+    List<Map<String, Object>> findAllBySql(String sql, List<Object> values);
 }

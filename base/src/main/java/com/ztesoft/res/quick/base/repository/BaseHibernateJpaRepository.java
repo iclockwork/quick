@@ -1,6 +1,8 @@
 package com.ztesoft.res.quick.base.repository;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
@@ -9,6 +11,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 
 /**
  * BaseHibernateJpaRepository
@@ -72,6 +75,17 @@ public abstract class BaseHibernateJpaRepository<T extends Entity, ID extends Se
         }
 
         return obj;
+    }
+
+    @Override
+    public List<Map<String, Object>> findAllBySql(String sql, List<Object> values) {
+        Query query = sessionFactory.getCurrentSession().createSQLQuery(sql).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        if (null != values) {
+            for (int i = 0; i < values.size(); i++) {
+                query.setParameter(i, values.get(i));
+            }
+        }
+        return query.list();
     }
 
     private void initClazz() {
