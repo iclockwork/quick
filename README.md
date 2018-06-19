@@ -61,12 +61,18 @@ logs/data-syn.log
 * 配置FTP服务器（暂手工插入数据库数据）
 
 QUICK_DATA_SYN_FTP
+
+详见表结构说明
 * 配置数据同步任务（暂手工插入数据库数据）
 
 QUICK_DATA_SYN_JOB
+
+详见表结构说明
 * 配置字段（暂手工插入数据库数据）
 
 QUICK_DATA_SYN_TABLE_FIELD
+
+详见表结构说明
 ### 测试验证
 * 按周期检查任务执行记录表（QUICK_DATA_SYN_DO_RECORD）中的记录是否正常。
 * 读写文件是否正确，是否有乱码。
