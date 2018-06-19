@@ -9,8 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>data-syn</artifactId>
-    <name>DATA SYN</name>
-    <description>DATA SYN module for Quick</description>
+    <name>Data Syn</name>
+    <description>Data Syn module for Quick</description>
     <properties>
         <main.basedir>${project.basedir}/../</main.basedir>
     </properties>
