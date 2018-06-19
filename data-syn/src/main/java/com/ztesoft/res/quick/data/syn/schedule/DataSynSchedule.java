@@ -59,10 +59,11 @@ public class DataSynSchedule {
      * "0 15 10 ? * 6L 2002-2005" 2002年至2005年的每月的最后一个星期五上午10:15触发
      * "0 15 10 ? * 6#3" 每月的第三个星期五上午10:15触发
      */
-    @Scheduled(initialDelay = 10000, fixedDelay = 60000) // 间隔1分钟执行一次
+    @Scheduled(cron = "0 0/30 * * * ?") // 间隔30分钟执行一次
     public void scanJob() {
         try {
             log.debug("Execute scan schedule start...");
+            //单线程
             dataSynService.doDataSynJob();
             log.debug("Execute scan schedule end...");
         } catch (Exception e) {
