@@ -38,3 +38,36 @@ logs/address.log
 检查ADDR_SEGM_FILE_RECORD中是否有失败的记录，状态为3，当天状态改为0可以重新被读取。
 
 按批次号检查ADDR_SEGM_FILE_RECORD中单个文件记录地址总数是否与Excel文件中的地址数一致，以及是否与ADDR_SEGM_CHECK_TMP中的地址记录总数一致。
+## DATA SYN Module
+### 安装部署
+* 环境
+
+JDK 1.8
+* 打包
+
+将data-syn模块打包并上传到服务器
+* 启动
+
+nohup java -jar data-syn-0.0.1-SNAPSHOT.jar &
+* 查看日志
+
+logs/data-syn.log
+* 关闭
+
+搜索到进程后杀死，ps -ef|grep data-syn，kill -9 进程ID
+### 功能描述
+设定任务读取或写入FTP接口文件
+### 使用步骤
+* 配置FTP服务器（暂手工插入数据库数据）
+
+QUICK_DATA_SYN_FTP
+* 配置数据同步任务（暂手工插入数据库数据）
+
+QUICK_DATA_SYN_JOB
+* 配置字段（暂手工插入数据库数据）
+
+QUICK_DATA_SYN_TABLE_FIELD
+### 测试验证
+* 按周期检查任务执行记录表（QUICK_DATA_SYN_DO_RECORD）中的记录是否正常。
+* 读写文件是否正确，是否有乱码。
+* 查看系统后台日志 data-syn.log 是否有异常，如果有异常需要分析原因。
