@@ -65,14 +65,21 @@ QUICK_DATA_SYN_FTP
 详见表结构说明
 * 配置数据同步任务（暂手工插入数据库数据）
 
-QUICK_DATA_SYN_JOB
+QUICK_DATA_SYN_TASK
 
 详见表结构说明
 * 配置字段（暂手工插入数据库数据）
 
 QUICK_DATA_SYN_TABLE_FIELD
 
-详见表结构说明
+* 查询、添加调度任务（页面）
+访问 http://127.0.0.1:8083/list-schedule-job.shtml
+
+涉及表：
+
+QUICK_DATA_SYN_SCHEDULE
+
+QRTZ_
 ### 测试验证
 * 按周期检查任务执行记录表（QUICK_DATA_SYN_DO_RECORD）中的记录是否正常。
 * 读写文件是否正确，是否有乱码。

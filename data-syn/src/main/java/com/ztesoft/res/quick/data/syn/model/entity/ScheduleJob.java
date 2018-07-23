@@ -16,7 +16,7 @@ import java.util.Objects;
  * @since: JDK 1.7
  */
 @Entity
-@Table(name = "SCHEDULE_JOB")
+@Table(name = "QUICK_DATA_SYN_SCHEDULE")
 public class ScheduleJob extends JpaEntity<String> implements Serializable {
     private Long scheduleJobId;
     private String jobName;
