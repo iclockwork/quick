@@ -21,7 +21,7 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
     private String fieldName;
     private Integer fieldType;
     private Integer fieldOrder;
-    private Long jobId;
+    private Long taskId;
     private Integer ignoreFlag;
     private String timeFormat;
 
@@ -68,13 +68,13 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
     }
 
     @Basic
-    @Column(name = "JOB_ID", nullable = false, precision = 0)
-    public Long getJobId() {
-        return jobId;
+    @Column(name = "TASK_ID", nullable = false, precision = 0)
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     @Basic
@@ -106,7 +106,7 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
                 Objects.equals(fieldName, that.fieldName) &&
                 Objects.equals(fieldType, that.fieldType) &&
                 Objects.equals(fieldOrder, that.fieldOrder) &&
-                Objects.equals(jobId, that.jobId) &&
+                Objects.equals(taskId, that.taskId) &&
                 Objects.equals(ignoreFlag, that.ignoreFlag) &&
                 Objects.equals(timeFormat, that.timeFormat);
     }
@@ -114,6 +114,6 @@ public class DataSynTableField extends JpaEntity<String> implements Serializable
     @Override
     public int hashCode() {
 
-        return Objects.hash(fieldId, fieldName, fieldType, fieldOrder, jobId, ignoreFlag, timeFormat);
+        return Objects.hash(fieldId, fieldName, fieldType, fieldOrder, taskId, ignoreFlag, timeFormat);
     }
 }

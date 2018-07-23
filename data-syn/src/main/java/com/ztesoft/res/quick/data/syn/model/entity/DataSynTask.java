@@ -16,13 +16,11 @@ import java.util.Objects;
  * @since: JDK 1.7
  */
 @Entity
-@Table(name = "QUICK_DATA_SYN_JOB")
-public class DataSynJob extends JpaEntity<String> implements Serializable {
-    private Long jobId;
-    private String jobName;
-    private String jobGroup;
-    private String cronExpression;
-    private Integer jobType;
+@Table(name = "QUICK_DATA_SYN_TASK")
+public class DataSynTask extends JpaEntity<String> implements Serializable {
+    private Long taskId;
+    private String taskName;
+    private Integer taskType;
     private Long ftpId;
     private String dir;
     private String fileNamePrefix;
@@ -38,55 +36,35 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     private Date modifyTime;
 
     @Id
-    @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_JOB", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_TASK", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
-    @Column(name = "JOB_ID", nullable = false, precision = 0)
-    public Long getJobId() {
-        return jobId;
+    @Column(name = "TASK_ID", nullable = false, precision = 0)
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
-    }
-
-    @Basic
-    @Column(name = "JOB_NAME", nullable = false, length = 100)
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     @Basic
-    @Column(name = "JOB_GROUP", nullable = false, length = 32)
-    public String getJobGroup() {
-        return jobGroup;
+    @Column(name = "TASK_NAME", nullable = false, length = 100)
+    public String getTaskName() {
+        return taskName;
     }
 
-    public void setJobGroup(String jobGroup) {
-        this.jobGroup = jobGroup;
-    }
-
-    @Basic
-    @Column(name = "CRON_EXPRESSION", nullable = false, length = 100)
-    public String getCronExpression() {
-        return cronExpression;
-    }
-
-    public void setCronExpression(String cronExpression) {
-        this.cronExpression = cronExpression;
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     @Basic
-    @Column(name = "JOB_TYPE", nullable = false)
-    public Integer getJobType() {
-        return jobType;
+    @Column(name = "TASK_TYPE", nullable = false)
+    public Integer getTaskType() {
+        return taskType;
     }
 
-    public void setJobType(Integer jobType) {
-        this.jobType = jobType;
+    public void setTaskType(Integer taskType) {
+        this.taskType = taskType;
     }
 
     @Basic
@@ -223,12 +201,10 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DataSynJob that = (DataSynJob) o;
-        return Objects.equals(jobId, that.jobId) &&
-                Objects.equals(jobName, that.jobName) &&
-                Objects.equals(jobGroup, that.jobGroup) &&
-                Objects.equals(cronExpression, that.cronExpression) &&
-                Objects.equals(jobType, that.jobType) &&
+        DataSynTask that = (DataSynTask) o;
+        return Objects.equals(taskId, that.taskId) &&
+                Objects.equals(taskName, that.taskName) &&
+                Objects.equals(taskType, that.taskType) &&
                 Objects.equals(ftpId, that.ftpId) &&
                 Objects.equals(dir, that.dir) &&
                 Objects.equals(fileNamePrefix, that.fileNamePrefix) &&
@@ -247,6 +223,6 @@ public class DataSynJob extends JpaEntity<String> implements Serializable {
     @Override
     public int hashCode() {
 
-        return Objects.hash(jobId, jobName, jobGroup, cronExpression, jobType, ftpId, dir, fileNamePrefix, fileNameSeparate, fileNameTimeFormat, fileNameExtension, fileEncode, tableName, tableQuerySql, description, state, createTime, modifyTime);
+        return Objects.hash(taskId, taskName, taskType, ftpId, dir, fileNamePrefix, fileNameSeparate, fileNameTimeFormat, fileNameExtension, fileEncode, tableName, tableQuerySql, description, state, createTime, modifyTime);
     }
 }

@@ -27,7 +27,7 @@ public class DataSynDoRecord extends JpaEntity<String> implements Serializable {
     private Long consumeTime;
     private Date startDate;
     private Date endDate;
-    private Long jobId;
+    private Long taskId;
 
     @Id
     @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_DO_RECORD", initialValue = 1, allocationSize = 1)
@@ -122,13 +122,13 @@ public class DataSynDoRecord extends JpaEntity<String> implements Serializable {
     }
 
     @Basic
-    @Column(name = "JOB_ID", nullable = false, precision = 0)
-    public Long getJobId() {
-        return jobId;
+    @Column(name = "TASK_ID", nullable = false, precision = 0)
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     @Override
@@ -145,12 +145,12 @@ public class DataSynDoRecord extends JpaEntity<String> implements Serializable {
                 Objects.equals(consumeTime, that.consumeTime) &&
                 Objects.equals(startDate, that.startDate) &&
                 Objects.equals(endDate, that.endDate) &&
-                Objects.equals(jobId, that.jobId);
+                Objects.equals(taskId, that.taskId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(recordId, fileName, filePath, rowTotal, remark, state, consumeTime, startDate, endDate, jobId);
+        return Objects.hash(recordId, fileName, filePath, rowTotal, remark, state, consumeTime, startDate, endDate, taskId);
     }
 }

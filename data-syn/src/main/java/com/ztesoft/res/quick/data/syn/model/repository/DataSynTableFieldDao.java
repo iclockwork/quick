@@ -28,8 +28,8 @@ public class DataSynTableFieldDao extends BaseHibernateJpaRepository<DataSynTabl
     /**
      * list
      */
-    public List<DataSynTableField> list(Long jobId) {
-        List<DataSynTableField> fields = (List<DataSynTableField>) this.getHibernateTemplate().findByNamedParam("from DataSynTableField t where t.jobId = :jobId order by t.fieldOrder asc", "jobId", jobId);
+    public List<DataSynTableField> list(Long taskId) {
+        List<DataSynTableField> fields = (List<DataSynTableField>) this.getHibernateTemplate().findByNamedParam("from DataSynTableField t where t.taskId = :taskId order by t.fieldOrder asc", "taskId", taskId);
         return fields;
     }
 

@@ -32,22 +32,22 @@ public class DataSynConstant {
     /**
      * 任务类型 1 数据文件读 2 数据文件写
      */
-    public static final Integer DATA_SYN_JOB_TYPE_READ = 1;
+    public static final Integer DATA_SYN_TASK_TYPE_READ = 1;
 
     /**
      * 任务类型 1 数据文件读 2 数据文件写
      */
-    public static final Integer DATA_SYN_JOB_TYPE_WRITE = 2;
+    public static final Integer DATA_SYN_TASK_TYPE_WRITE = 2;
 
     /**
      * 状态 0 未启用 1 启用
      */
-    public static final Integer DATA_SYN_JOB_STATE_DISABLED = 0;
+    public static final Integer DATA_SYN_TASK_STATE_DISABLED = 0;
 
     /**
      * 状态 0 未启用 1 启用
      */
-    public static final Integer DATA_SYN_JOB_STATE_ENABLE = 1;
+    public static final Integer DATA_SYN_TASK_STATE_ENABLE = 1;
 
     /**
      * 字段类型 1 数字 2 字符串 3 时间 4 浮点
@@ -78,4 +78,29 @@ public class DataSynConstant {
      * 是否忽略 0 否 1 是
      */
     public static final Integer DATA_SYN_TABLE_FIELD_IGNORE_FLAG_YES = 1;
+
+    /**
+     * 任务调度的参数key
+     */
+    public static final String JOB_PARAM_KEY = "jobParam";
+
+    /**
+     * 任务是否异步 0 否 1 是
+     */
+    public static final String SCHEDULE_JOB_SYNC_YES = "1";
+
+    /**
+     * 任务是否异步 0 否 1 是
+     */
+    public static final String SCHEDULE_JOB_SYNC_NO = "0";
+
+    /**
+     * 状态 0 未启用 1 启用
+     */
+    public static final String SCHEDULE_JOB_STATUS_DISABLED = "0";
+
+    /**
+     * 状态 0 未启用 1 启用
+     */
+    public static final String SCHEDULE_JOB_STATUS_ENABLE = "1";
 }

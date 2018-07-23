@@ -7,12 +7,12 @@ import com.ztesoft.res.quick.base.util.ftp.FTPParamConfig;
 import com.ztesoft.res.quick.data.syn.DataSynConstant;
 import com.ztesoft.res.quick.data.syn.model.entity.DataSynDoRecord;
 import com.ztesoft.res.quick.data.syn.model.entity.DataSynFtp;
-import com.ztesoft.res.quick.data.syn.model.entity.DataSynJob;
 import com.ztesoft.res.quick.data.syn.model.entity.DataSynTableField;
+import com.ztesoft.res.quick.data.syn.model.entity.DataSynTask;
 import com.ztesoft.res.quick.data.syn.model.repository.DataSynDoRecordDao;
 import com.ztesoft.res.quick.data.syn.model.repository.DataSynFtpDao;
-import com.ztesoft.res.quick.data.syn.model.repository.DataSynJobDao;
 import com.ztesoft.res.quick.data.syn.model.repository.DataSynTableFieldDao;
+import com.ztesoft.res.quick.data.syn.model.repository.DataSynTaskDao;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,93 +48,91 @@ public class DataSynService {
     DataSynFtpDao dataSynFtpDao;
 
     @Autowired
-    DataSynJobDao dataSynJobDao;
+    DataSynTaskDao dataSynTaskDao;
 
     @Autowired
     DataSynTableFieldDao dataSynTableFieldDao;
 
     /**
-     * 取一个Job执行（按时间最早）
+     * Task执行
      */
     @Transactional
-    public void doDataSynJob() throws Exception {
-        List<DataSynJob> jobs = dataSynJobDao.list();
-        if (null != jobs && !jobs.isEmpty()) {
-            for (DataSynJob dataSynJob : jobs) {
-                log.info("Do job [" + dataSynJob.getJobName() + "] start");
+    public void doDataSynTask(Long taskId) throws Exception {
+        DataSynTask dataSynTask = dataSynTaskDao.findById(taskId);
+        if (null != dataSynTask) {
+            log.info("Do task [" + dataSynTask.getTaskName() + "] start");
 
-                //Job执行记录
-                Date start = new Date();
-                Long startS = start.getTime();
-                DataSynDoRecord dataSynDoRecord = new DataSynDoRecord();
-                String time = DateUtils.dateToStr(start, dataSynJob.getFileNameTimeFormat());
-                String fileName = dataSynJob.getFileNamePrefix() + dataSynJob.getFileNameSeparate() + time + dataSynJob.getFileNameExtension();
-                String filePath = dataSynJob.getDir() + fileName;
-                dataSynDoRecord.setFileName(fileName);
-                dataSynDoRecord.setFilePath(filePath);
-                dataSynDoRecord.setRowTotal(0);
-                dataSynDoRecord.setConsumeTime(0L);
-                dataSynDoRecord.setStartDate(start);
-                dataSynDoRecord.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_TO_DO);
-                dataSynDoRecord.setEndDate(start);
-                dataSynDoRecord.setJobId(dataSynJob.getJobId());
+            //Task执行记录
+            Date start = new Date();
+            Long startS = start.getTime();
+            DataSynDoRecord dataSynDoRecord = new DataSynDoRecord();
+            String time = DateUtils.dateToStr(start, dataSynTask.getFileNameTimeFormat());
+            String fileName = dataSynTask.getFileNamePrefix() + dataSynTask.getFileNameSeparate() + time + dataSynTask.getFileNameExtension();
+            String filePath = dataSynTask.getDir() + fileName;
+            dataSynDoRecord.setFileName(fileName);
+            dataSynDoRecord.setFilePath(filePath);
+            dataSynDoRecord.setRowTotal(0);
+            dataSynDoRecord.setConsumeTime(0L);
+            dataSynDoRecord.setStartDate(start);
+            dataSynDoRecord.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_TO_DO);
+            dataSynDoRecord.setEndDate(start);
+            dataSynDoRecord.setTaskId(dataSynTask.getTaskId());
 
-                if (!isExist(dataSynJob.getJobId(), filePath)) {
-                    FTPHelper ftpHelper = getFtpHelper(dataSynJob.getFtpId());
-                    try {
-                        int rowTotal = 0;
+            if (!isExist(dataSynTask.getTaskId(), filePath)) {
+                FTPHelper ftpHelper = getFtpHelper(dataSynTask.getFtpId());
+                try {
+                    int rowTotal = 0;
 
-                        //JOB类型
-                        if (DataSynConstant.DATA_SYN_JOB_TYPE_READ.equals(dataSynJob.getJobType())) {
-                            doDataSynReadJob(ftpHelper, dataSynJob, fileName, rowTotal, dataSynDoRecord);
-                        } else if (DataSynConstant.DATA_SYN_JOB_TYPE_WRITE.equals(dataSynJob.getJobType())) {
-                            doDataSynWriteJob(ftpHelper, dataSynJob, fileName, rowTotal, dataSynDoRecord);
-                        }
-
-                        //保存Job执行记录
-                        Date end = new Date();
-                        Long endS = end.getTime();
-                        dataSynDoRecord.setConsumeTime(endS - startS);
-                        dataSynDoRecord.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_SUCCESSFUL);
-                        dataSynDoRecord.setEndDate(end);
-                        dataSynDoRecordDao.insert(dataSynDoRecord);
-                    } catch (BusinessException e) {
-                        log.error(e.getMessage(), e);
-
-                        //记录自定义异常，自定义异常不回滚
-                        Date end = new Date();
-                        Long endS = end.getTime();
-                        dataSynDoRecord.setConsumeTime(endS - startS);
-                        dataSynDoRecord.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_FAILED);
-                        dataSynDoRecord.setEndDate(end);
-                        dataSynDoRecord.setRemark(e.getMessage());
-                        dataSynDoRecordDao.insert(dataSynDoRecord);
-                    } catch (Exception e) {
-                        log.error(e.getMessage(), e);
-                        //将异常抛出去，否则事务不回滚
-                        throw e;
-                    } finally {
-                        ftpHelper.closeFTPServer();
+                    //Task类型
+                    if (DataSynConstant.DATA_SYN_TASK_TYPE_READ.equals(dataSynTask.getTaskType())) {
+                        doDataSynReadTask(ftpHelper, dataSynTask, fileName, rowTotal, dataSynDoRecord);
+                    } else if (DataSynConstant.DATA_SYN_TASK_TYPE_WRITE.equals(dataSynTask.getTaskType())) {
+                        doDataSynWriteTask(ftpHelper, dataSynTask, fileName, rowTotal, dataSynDoRecord);
                     }
+
+                    //保存Task执行记录
+                    Date end = new Date();
+                    Long endS = end.getTime();
+                    dataSynDoRecord.setConsumeTime(endS - startS);
+                    dataSynDoRecord.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_SUCCESSFUL);
+                    dataSynDoRecord.setEndDate(end);
+                    dataSynDoRecordDao.insert(dataSynDoRecord);
+                } catch (BusinessException e) {
+                    log.error(e.getMessage(), e);
+
+                    //记录自定义异常，自定义异常不回滚
+                    Date end = new Date();
+                    Long endS = end.getTime();
+                    dataSynDoRecord.setConsumeTime(endS - startS);
+                    dataSynDoRecord.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_FAILED);
+                    dataSynDoRecord.setEndDate(end);
+                    dataSynDoRecord.setRemark(e.getMessage());
+                    dataSynDoRecordDao.insert(dataSynDoRecord);
+                } catch (Exception e) {
+                    log.error(e.getMessage(), e);
+                    //将异常抛出去，否则事务不回滚
+                    throw e;
+                } finally {
+                    ftpHelper.closeFTPServer();
                 }
-                log.info("Do job [" + dataSynJob.getJobName() + "] end");
             }
+            log.info("Do task [" + dataSynTask.getTaskName() + "] end");
         } else {
-            log.warn("There is no job to do");
+            log.warn("Task not found");
         }
     }
 
     /**
-     * doDataSynReadJob
+     * doDataSynReadTask
      */
-    private void doDataSynReadJob(FTPHelper ftpHelper, DataSynJob dataSynJob, String fileName, int rowTotal, DataSynDoRecord dataSynDoRecord) throws Exception {
+    private void doDataSynReadTask(FTPHelper ftpHelper, DataSynTask dataSynTask, String fileName, int rowTotal, DataSynDoRecord dataSynDoRecord) throws Exception {
         if (ftpHelper.connFTPServer()) {
-            ArrayList<String[]> dataList = ftpHelper.getFileContentForList(dataSynJob.getDir(), fileName, dataSynJob.getFileEncode());
+            ArrayList<String[]> dataList = ftpHelper.getFileContentForList(dataSynTask.getDir(), fileName, dataSynTask.getFileEncode());
             if (null != dataList && !dataList.isEmpty() && dataList.size() > 1) {
                 rowTotal = dataList.size() - 1;
                 log.info("File data row size : " + rowTotal);
                 //字段定义
-                List<DataSynTableField> fields = dataSynTableFieldDao.list(dataSynJob.getJobId());
+                List<DataSynTableField> fields = dataSynTableFieldDao.list(dataSynTask.getTaskId());
                 String fieldNameStr = "";
                 String fieldValueStr = "";
                 for (int i = 0; i < fields.size(); i++) {
@@ -149,7 +147,7 @@ public class DataSynService {
                         fieldValueStr += ":" + field.getFieldName();
                     }
                 }
-                String sql = "insert into " + dataSynJob.getTableName() + " (" + fieldNameStr + ") values (" + fieldValueStr + ")";
+                String sql = "insert into " + dataSynTask.getTableName() + " (" + fieldNameStr + ") values (" + fieldValueStr + ")";
                 log.info("Table save sql : " + sql);
 
                 //数据，第一行为表头，从第二行开始读取
@@ -177,11 +175,11 @@ public class DataSynService {
     }
 
     /**
-     * doDataSynWriteJob
+     * doDataSynWriteTask
      */
-    private void doDataSynWriteJob(FTPHelper ftpHelper, DataSynJob dataSynJob, String fileName, int rowTotal, DataSynDoRecord dataSynDoRecord) throws Exception {
+    private void doDataSynWriteTask(FTPHelper ftpHelper, DataSynTask dataSynTask, String fileName, int rowTotal, DataSynDoRecord dataSynDoRecord) throws Exception {
         //查询数据
-        String sql = dataSynJob.getTableQuerySql();
+        String sql = dataSynTask.getTableQuerySql();
         log.info("Table query sql : " + sql);
         //待写入数据
         List<String[]> writeDataList = new ArrayList<String[]>();
@@ -192,7 +190,7 @@ public class DataSynService {
             rowTotal = dataList.size();
             log.info("Table data row size : " + rowTotal);
             //字段定义
-            List<DataSynTableField> fields = dataSynTableFieldDao.list(dataSynJob.getJobId());
+            List<DataSynTableField> fields = dataSynTableFieldDao.list(dataSynTask.getTaskId());
 
             for (int i = 0; i < dataList.size(); i++) {
                 //表头
@@ -233,7 +231,7 @@ public class DataSynService {
 
             if (ftpHelper.connFTPServer()) {
                 //写入数据
-                ftpHelper.writeCsvFile(dataSynJob.getDir(), fileName, writeDataList, dataSynJob.getFileEncode());
+                ftpHelper.writeCsvFile(dataSynTask.getDir(), fileName, writeDataList, dataSynTask.getFileEncode());
             }
         } else {
             log.warn("There is no data");
@@ -259,15 +257,15 @@ public class DataSynService {
     }
 
     /**
-     * 根据Job和文件路径查询是否已经有已完成记录
+     * 根据Task和文件路径查询是否已经有已完成记录
      *
      * @param filePath 文件路径
      * @return boolean
      */
-    private boolean isExist(Long jobId, String filePath) {
+    private boolean isExist(Long taskId, String filePath) {
         boolean isExist = false;
         DataSynDoRecord dataSynDoRecordExample = new DataSynDoRecord();
-        dataSynDoRecordExample.setJobId(jobId);
+        dataSynDoRecordExample.setTaskId(taskId);
         dataSynDoRecordExample.setState(DataSynConstant.DATA_SYN_DO_RECORD_STATE_SUCCESSFUL);
         dataSynDoRecordExample.setFilePath(filePath);
         DataSynDoRecord dataSynDoRecordExist = dataSynDoRecordDao.findByExample(dataSynDoRecordExample);
