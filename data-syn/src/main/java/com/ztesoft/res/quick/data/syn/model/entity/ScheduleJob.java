@@ -33,7 +33,7 @@ public class ScheduleJob extends JpaEntity<String> implements Serializable {
     private Date gmtModify;
 
     @Id
-    @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_SCHEDULE_JOB", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "idGenerator", sequenceName = "SEQ_QUICK_DATA_SYN_SCHEDULE", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idGenerator")
     @Column(name = "SCHEDULE_JOB_ID", nullable = false, precision = 0)
     public Long getScheduleJobId() {
