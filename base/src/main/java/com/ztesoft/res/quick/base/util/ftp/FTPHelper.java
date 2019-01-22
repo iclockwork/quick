@@ -96,6 +96,7 @@ public class FTPHelper {
         try {
             if ((ftpClient != null) && !ftpClient.isConnected()) {
                 ftpClient.connect(ftpParam.getIp(), ftpParam.getPort());
+                log.info("Connect FTP");
                 // 设置编码方式
                 ftpClient.setControlEncoding(ENCODE);
 				/*FTPClientConfig conf = new FTPClientConfig(FTPClientConfig.SYST_UNIX);
@@ -114,6 +115,8 @@ public class FTPHelper {
             if ((ftpClient != null) && ftpClient.isConnected()) {
                 ftpClient.logout();
                 ftpClient.disconnect();
+
+                log.info("Disconnect FTP");
             }
         } catch (IOException ex) {
             throw new BusinessException("关闭FTP服务器失败：" + ex.getMessage());

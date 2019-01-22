@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * DataSynService
@@ -113,7 +110,17 @@ public class DataSynService {
                     //将异常抛出去，否则事务不回滚
                     throw e;
                 } finally {
-                    ftpHelper.closeFTPServer();
+                    //延迟1分钟关闭，以免数据丢失
+                    Timer timer = new Timer();// 实例化Timer类
+                    timer.schedule(new TimerTask() {
+                        public void run() {
+                            try {
+                                ftpHelper.closeFTPServer();
+                            } catch (BusinessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 60000);
                 }
             }
             log.info("Do task [" + dataSynTask.getTaskName() + "] end");
@@ -238,6 +245,38 @@ public class DataSynService {
         }
 
         dataSynDoRecord.setRowTotal(rowTotal);
+    }
+
+    /**
+     * 检查已上传数据是否完整
+     */
+    private void checkUploadedData(FTPHelper ftpHelper, DataSynTask dataSynTask, String fileName, int rowTotal, DataSynDoRecord dataSynDoRecord) throws BusinessException {
+        if (ftpHelper.connFTPServer()) {
+            int uploadedRowTotal = 0;
+            ArrayList<String[]> uploadedDataList = ftpHelper.getFileContentForList(dataSynTask.getDir(), fileName, dataSynTask.getFileEncode());
+            if (null != uploadedDataList && !uploadedDataList.isEmpty() && uploadedDataList.size() > 1) {
+                uploadedRowTotal = uploadedDataList.size() - 1;
+                log.info("Uploaded file data row size : " + uploadedRowTotal);
+                //检查行数是否一致
+                if (uploadedRowTotal == rowTotal) {
+                    //TODO 再检查最后一行数据是否一致
+                    String[] dataArr = uploadedDataList.get(uploadedRowTotal);
+                    String rowStr = "";
+                    for (int j = 0; j < dataArr.length; j++) {
+                        if (StringUtils.isNotEmpty(rowStr)) {
+                            rowStr += ", ";
+                        }
+                        rowStr += dataArr[j];
+                    }
+
+                    log.info("Uploaded data last rows " + uploadedRowTotal + " : " + rowStr);
+                } else {
+                    log.warn("Check the uploaded file data is inconsistent total");
+                }
+            } else {
+                log.warn("Check the uploaded file is no data");
+            }
+        }
     }
 
     /**
