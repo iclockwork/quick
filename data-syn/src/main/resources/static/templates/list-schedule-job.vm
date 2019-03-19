@@ -3,23 +3,18 @@
 <table class="table table-bordered table-margin-top">
     <tr>
         <td>任务名称</td>
-        <td>任务别名</td>
         <td>任务分组</td>
-        <td>触发器</td>
         <td>任务状态</td>
         <td>时间表达式</td>
         <td>是否异步</td>
         <td>Task Id</td>
         <td>URL</td>
-        <td>任务描述</td>
         <td>操作</td>
     </tr>
     #foreach($item in $scheduleJobList)
         <tr>
             <td>$!{item.jobName}</td>
-            <td>$!{item.aliasName}</td>
             <td>$!{item.jobGroup}</td>
-            <td>$!{item.jobTrigger}</td>
             #if ($!{item.status}=="PAUSED")
                 <td class="status-color">$!{item.status}</td>
             #else
@@ -35,7 +30,6 @@
             </td>
             <td>$!{item.taskId}</td>
             <td>$!{item.url}</td>
-            <td>$!{item.description}</td>
             <td>
                 <!--<a href="input-schedule-job.shtml?scheduleJobId=$!{item.scheduleJobId}">修改</a>-->
                 <a class="btn btn-danger" role="button"
@@ -65,28 +59,22 @@
 <table class="table table-bordered">
     <tr>
         <td>任务名称</td>
-        <td>任务别名</td>
         <td>任务分组</td>
-        <td>触发器</td>
         <td>任务状态</td>
         <td>时间表达式</td>
         <td>是否异步</td>
         <td>Task Id</td>
         <td>URL</td>
-        <td>任务描述</td>
     </tr>
     #foreach($item in $executingJobList)
         <tr>
             <td>$!{item.jobName}</td>
-            <td>$!{item.aliasName}</td>
             <td>$!{item.jobGroup}</td>
-            <td>$!{item.jobTrigger}</td>
             <td>$!{item.status}</td>
             <td>$!{item.cronExpression}</td>
             <td>$!{item.sync}</td>
             <td>$!{item.taskId}</td>
             <td>$!{item.url}</td>
-            <td>$!{item.description}</td>
         </tr>
     #end
 </table>
